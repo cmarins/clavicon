@@ -1,0 +1,19 @@
+<h1>Lista de Fichas</h1>
+
+<input type="text" ng-model="nombre"/>
+<button ng-click="crear()">Crear Ficha</button>
+<hr/>
+<table ng-show="fichas.length">
+  <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Borrar</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="ficha in fichas">
+    <td ng-bind="ficha.nombre"></td>
+    <td><a ng-click="borrar(ficha)">X</a></td>
+  </tr>
+  </tbody>
+</table>

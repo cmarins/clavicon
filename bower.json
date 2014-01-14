@@ -1,0 +1,19 @@
+{
+  "name": "angular-template-project",
+  "homepage": "https://github.com/marcorinck/ngStart",
+  "main": "src/main/css/project.css",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "angular": "1.2.x",
+    "angular-route": "1.2.x",
+    "almond": "0.2.x",
+    "requirejs": "2.1.x",
+    "q": "~1.0.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.2.x"
+  }
+}

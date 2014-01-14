@@ -1,0 +1,11 @@
+/bower_components/
+/node_modules/
+/web-client.iml
+/web-client.ipr
+/web-client.iws
+.idea
+*.iml
+JasmineAdapter-1.1.2.js
+jasmine-1.1.0.js
+target
+src/main/modules/config.js
