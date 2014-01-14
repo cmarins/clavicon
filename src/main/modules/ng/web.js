@@ -18,7 +18,7 @@ define(['angular', 'ng/fichas/fichasModule', 'ng/apuntes/ApuntesModule'], functi
           function notify(type, message) {
             setTimeout(function () {
               $rootScope.$apply(function () {
-                $rootScope.$broadcast('notify.type', [message]);
+                $rootScope.$broadcast('notify', [type, message]);
               });
             }, 0);
           }
