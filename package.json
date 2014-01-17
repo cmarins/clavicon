@@ -1,16 +1,16 @@
 {
-  "name": "ngStart",
-  "homepage": "https://github.com/marcorinck/ngStart",
-  "author": "Marco Rinck <marco.rinck@googlemail.com>",
-  "description": "This project is a skeleton to use for new angularJS projects. It works out of the box without changes and contains all the boiler plate code to setup a new project. It contains hooks for your production code, unit tests, deployment, module loading and much more.",
+  "name": "clavicon",
+  "homepage": "http://github.com/ggalmazor/clavicon",
+  "author": "Guillermo Gutiérrez <ggalmazor@gmail.com>, Luis Artola <luisartola1@gmail.com",
+  "description": "La contabilidad del clavo",
   "bugs": {
-    "url": "http://github.com/marcorinck/ngStart/issues"
+    "url": "http://github.com/ggalmazor/clavicon/issues"
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/marcorinck/ngStart"
+    "url": "http://github.com/ggalmazor/clavicon"
   },
-  "version": "0.2.0",
+  "version": "0.0.1",
   "license": "MIT",
   "devDependencies": {
     "karma": "0.10.x",

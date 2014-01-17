@@ -1,6 +1,6 @@
 {
-  "name": "angular-template-project",
-  "homepage": "https://github.com/marcorinck/ngStart",
+  "name": "clavicon",
+  "homepage": "https://github.com/ggalmazor/clavicon",
   "main": "src/main/css/project.css",
   "ignore": [
     ".jshintrc",
@@ -11,7 +11,8 @@
     "angular-route": "1.2.x",
     "almond": "0.2.x",
     "requirejs": "2.1.x",
-    "q": "~1.0.0"
+    "q": "~1.0.0",
+    "bootstrap": "~3.0.3"
   },
   "devDependencies": {
     "angular-mocks": "1.2.x"

@@ -1,0 +1,18 @@
+a {
+  cursor: pointer;
+}
+
+body > .container {
+  margin-top: 40px;
+}
+
+.nav li {
+  cursor: pointer;
+}
+
+.emails,
+.telefonos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

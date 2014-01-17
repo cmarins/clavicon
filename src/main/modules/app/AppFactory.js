@@ -15,8 +15,8 @@ define(['Q'], function (Q) {
           })
     }
 
-    function crearFicha(request) {
-      var ficha = repo.fichas.create(request.nombre);
+    function crearFicha(ficha) {
+      var ficha = repo.fichas.create(ficha);
       Q.when(repo.fichas.persist(ficha))
           .then(transitionToFichas);
     }

@@ -1,4 +1,4 @@
-define(['angular', 'ng/fichas/fichasModule', 'ng/apuntes/ApuntesModule'], function (angular, Fichas, Apuntes) {
+define(['angular', 'ng/navBar/NavBarModule', 'ng/fichas/fichasModule', 'ng/apuntes/ApuntesModule'], function (angular, NavBar, Fichas, Apuntes) {
   var appName = 'web';
 
   function WebApi($rootScope, $location) {
@@ -35,7 +35,7 @@ define(['angular', 'ng/fichas/fichasModule', 'ng/apuntes/ApuntesModule'], functi
 
   function WebFactory() {
     var webApp = angular
-        .module(appName, [Fichas(), Apuntes()])
+        .module(appName, [NavBar(), Fichas(), Apuntes()])
         .config(['$routeProvider', function ($routeProvider) {
           $routeProvider.otherwise({redirectTo: '/fichas'})
         }]);
