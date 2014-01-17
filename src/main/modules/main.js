@@ -12,7 +12,8 @@
     }
   });
 
-  require(["app/app", "ng/web"], function (App, web) {
-    App(web).bootstrap(document);
+  require(["app/AppFactory", "repo/repoFactory", "ng/WebFactory"], function (AppFactory, repoFactory, WebFactory) {
+    var repo = repoFactory.inMemory();
+    AppFactory(repo, WebFactory).bootstrap(document);
   });
 }(require));

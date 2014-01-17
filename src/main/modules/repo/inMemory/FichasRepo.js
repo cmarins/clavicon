@@ -1,9 +1,9 @@
-define(['Q', 'fichas/Ficha'], function (Q, Ficha) {
+define(['repo/domain/Ficha'], function (Ficha) {
   return function (fichas) {
     fichas = !!fichas ? fichas : [];
 
     function all() {
-      return Q.when(fichas);
+      return fichas;
     }
 
     function create(nombre) {
@@ -12,7 +12,7 @@ define(['Q', 'fichas/Ficha'], function (Q, Ficha) {
 
     function persist(ficha) {
       fichas.push(ficha);
-      return Q.when(ficha);
+      return fichas;
     }
 
     function remove(ficha) {
