@@ -1,23 +1,23 @@
 define([], function () {
-  function NavBarController($scope, $location) {
+  function NavBarController($scope, appApi) {
     $scope.fichas = function () {
       $scope.active = 'fichas';
-      $location.path('/fichas');
+      appApi.execute(appApi.useCases.fichas.irAListado);
     };
 
     $scope.apuntes = function () {
       $scope.active = 'apuntes';
-      $location.path('/apuntes');
+      appApi.execute(appApi.useCases.apuntes.irAListado);
     };
 
-    $scope.isActive = function(page) {
+    $scope.isActive = function (page) {
       return page == $scope.active;
     };
 
     $scope.active = 'fichas';
   }
 
-  NavBarController.$inject = ['$scope', '$location'];
+  NavBarController.$inject = ['$scope', 'appApi'];
   return NavBarController;
 });
 

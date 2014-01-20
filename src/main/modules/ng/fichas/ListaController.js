@@ -1,55 +1,24 @@
 define([], function () {
-  function newFicha() {
-    return {
-      emails: [],
-      telefonos: []
-    };
-  }
-
-  function ListaController($scope, $location, appApi) {
-    function create() {
-      appApi.execute(appApi.useCases.fichas.crear, $scope.ficha);
-      $scope.ficha = newFicha();
-    }
-
-    function remove(ficha) {
+  function ListaController($scope, appApi) {
+    function borrar(ficha) {
       appApi.execute(appApi.useCases.fichas.borrar, ficha);
     }
 
-
-    function add(coleccion, elemento) {
-      if ($scope.ficha[coleccion].indexOf(elemento) == -1)
-        $scope.ficha[coleccion].push(elemento);
+    function irACrear() {
+      appApi.execute(appApi.useCases.fichas.irACrear);
     }
 
-    function remove(coleccion, elemento) {
-      $scope.ficha[coleccion].splice($scope.ficha[coleccion].indexOf(elemento), 1);
-    }
-
-    $scope.ficha = newFicha();
     $scope.fichas = [];
 
-    $scope.addEmail = function () {
-      add('emails', $scope.email);
-      $scope.email = '';
-    };
-    $scope.addTelefono = function () {
-      add('telefonos', $scope.telefono);
-      $scope.telefono = '';
-    };
-    $scope.removeEmail = function (email) {
-      remove('emails', email);
-    };
-    $scope.removeTelefono = function (telefono) {
-      remove('telefonos', telefono  );
-    };
-    $scope.create = create;
+    $scope.borrar = borrar;
+    $scope.irACrear = irACrear;
 
     $scope.$on('data', function (event, args) {
+      console.log("Recibida lista de fichas", args[0]);
       $scope.fichas = args[0];
     });
   }
 
-  ListaController.$inject = ['$scope', '$location', 'appApi'];
+  ListaController.$inject = ['$scope', 'appApi'];
   return ListaController;
 });

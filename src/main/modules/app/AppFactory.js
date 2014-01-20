@@ -1,59 +1,39 @@
-define(['Q'], function (Q) {
+define(['app/FichasApp', 'app/ApuntesApp'], function (FichasApp, ApuntesApp) {
 
-  function AppApi(repo) {
-    var webApi, useCases;
+  function AppApi(modules) {
+    var useCases = {};
+    Object.keys(modules).forEach(function(module) {
+      useCases[module] = modules[module].useCases;
+    });
 
-    function setWebApi(_webApi) {
-      webApi = _webApi;
+    function setWebApi(webApi) {
+      Object.keys(modules).forEach(function (module) {
+        modules[module].setWebApi(webApi);
+      });
+      modules.fichas.init();
     }
-
-    function transitionToFichas() {
-      Q.when(repo.fichas.all())
-          .then(function (fichas) {
-            webApi.transition('/fichas');
-            webApi.show(fichas);
-          })
-    }
-
-    function crearFicha(ficha) {
-      var ficha = repo.fichas.create(ficha);
-      Q.when(repo.fichas.persist(ficha))
-          .then(transitionToFichas);
-    }
-
-    function borrarFicha(ficha) {
-      Q.when(repo.fichas.remove(ficha))
-          .then(transitionToFichas)
-    }
-
-    useCases = {
-      fichas: {
-        crear: crearFicha,
-        borrar: borrarFicha
-      }
-    };
 
     return {
       setWebApi: setWebApi,
       execute: function (useCase, params) {
-        var match = useCase.match(/^(.+?)\.(.+?)$/);
-        useCases[match[1]][match[2]].call(null, params)
+        var match = useCase.match(/^(.+?)\.(.+?)$/),
+            module = match[1],
+            useCase = match[2];
+        modules[module][useCase].call(null, params)
       },
-      useCases: {
-        fichas: {
-          crear: 'fichas.crear',
-          borrar: 'fichas.borrar'
-        }
-      }
+      useCases: useCases
     };
   }
 
   function AppFactory(repo, webFactory) {
     var web = webFactory();
+    var modules = {};
+    modules.fichas = FichasApp(repo);
+    modules.apuntes = ApuntesApp(repo);
 
     return {
       bootstrap: function (element) {
-        web.bootstrap(AppApi(repo), element);
+        web.bootstrap(AppApi(modules), element);
       }
     }
   }

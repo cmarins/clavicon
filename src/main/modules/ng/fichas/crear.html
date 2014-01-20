@@ -1,0 +1,126 @@
+<div class="page-header">
+  <h1>Crear una nueva ficha</h1>
+
+  <p class="lead">Rellena el formulario y pulsa el botón <strong>Crear</strong>.</p>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <form name="fichaForm" class="form-horizontal" role="form">
+      <div class="form-group">
+        <label for="nombre" class="col-sm-2 control-label">Nombre</label>
+
+        <div class="col-sm-10">
+          <input ng-model="ficha.nombre" type="text" class="form-control" id="nombre" placeholder="Nombre">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="nif" class="col-sm-2 control-label">NIF</label>
+
+        <div class="col-sm-10">
+          <input ng-model="ficha.nif" type="text" class="form-control" id="nif" placeholder="00112233A ó B00112233">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email" class="col-sm-2 control-label">Email</label>
+
+        <div class="col-sm-10">
+          <div class="input-group">
+            <input ng-model="email" name="email" type="email" class="form-control" id="email"
+                   placeholder="nombre@dominio.com" ng-focus="email = ''"
+                   ng-keypress="execIfEnterPressed('addEmail', $event)">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" ng-disabled="!email || fichaForm.email.$invalid"
+                      ng-click="addEmail()">Añadir email
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" ng-show="ficha.emails.length">
+        <div class="col-sm-offset-2 col-sm-10">
+          <ul class="emails">
+            <li ng-repeat="email in ficha.emails">{{email}} <a ng-click="removeEmail(email)">✖</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="telefono" class="col-sm-2 control-label">Teléfono</label>
+
+        <div class="col-sm-10">
+          <div class="input-group">
+            <input ng-model="telefono" type="text" class="form-control" id="telefono" placeholder="943012345"
+                   ng-focus="telefono = ''" ng-keypress="execIfEnterPressed('addTelefono', $event)">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" ng-disabled="!telefono" ng-click="addTelefono()">Añadir
+                teléfono
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" ng-show="ficha.telefonos.length">
+        <div class="col-sm-offset-2 col-sm-10">
+          <ul class="telefonos">
+            <li ng-repeat="telefono in ficha.telefonos">{{telefono}} <a ng-click="removeTelefono(telefono)">✖</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="direccion" class="col-sm-2 control-label">Dirección</label>
+
+        <div class="col-sm-10">
+          <input ng-model="ficha.direccion" type="text" class="form-control" id="direccion"
+                 placeholder="Rúe del Percebe 13, 2º A">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="localidad" class="col-sm-2 control-label">Localidad</label>
+
+        <div class="col-sm-10">
+          <input ng-model="ficha.localidad" type="text" class="form-control" id="localidad" placeholder="Torrelavieja">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="codigo_postal" class="col-sm-2 control-label">Código Postal</label>
+
+        <div class="col-sm-10">
+          <input ng-model="ficha.codigo_postal" type="text" class="form-control" id="codigo_postal" placeholder="20010">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="provincia" class="col-sm-2 control-label">Provincia</label>
+
+        <div class="col-sm-10">
+          <input ng-model="ficha.provincia" type="text" class="form-control" id="provincia" placeholder="Huesca">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="pais" class="col-sm-2 control-label">País</label>
+
+        <div class="col-sm-10">
+          <input ng-model="ficha.pais" type="text" class="form-control" id="pais" placeholder="España">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <div class="btn-group">
+            <button type="submit" class="btn btn-primary" ng-click="crear()">Crear</button>
+            <button class="btn btn-danger" ng-click="cancelar()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 define(['angular', 'ng/navBar/NavBarModule', 'ng/fichas/fichasModule', 'ng/apuntes/ApuntesModule'], function (angular, NavBar, Fichas, Apuntes) {
   var appName = 'web';
+  var n = 0;
 
   function WebApi($rootScope, $location) {
     function transition(target) {
@@ -26,8 +27,22 @@ define(['angular', 'ng/navBar/NavBarModule', 'ng/fichas/fichasModule', 'ng/apunt
       }, 0);
     }
 
+    function transitionAndShow(target, data) {
+      setTimeout(function () {
+        var eventDeregistration = $rootScope.$on('$routeChangeSuccess', function (event, route) {
+          if (!!route && route.$$route.originalPath == target) {
+            show(data);
+            eventDeregistration();
+          }
+        });
+      }, 0);
+      transition('/');
+      transition(target);
+    }
+
     return {
       transition: transition,
+      transitionAndShow: transitionAndShow,
       notify: notify,
       show: show
     };
@@ -35,10 +50,7 @@ define(['angular', 'ng/navBar/NavBarModule', 'ng/fichas/fichasModule', 'ng/apunt
 
   function WebFactory() {
     var webApp = angular
-        .module(appName, [NavBar(), Fichas(), Apuntes()])
-        .config(['$routeProvider', function ($routeProvider) {
-          $routeProvider.otherwise({redirectTo: '/fichas'})
-        }]);
+        .module(appName, [NavBar(), Fichas(), Apuntes()]);
 
     return {
       bootstrap: function (appApi, element) {

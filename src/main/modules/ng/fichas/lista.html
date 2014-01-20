@@ -5,132 +5,24 @@
     enlaces de páginas para encontrar lo que buscas.</p>
 </div>
 
-<div class="row" ng-show="showCrear">
-  <div class="col-md-12">
-    <h2>Crear una nueva ficha</h2>
-
-    <form name="fichaForm" class="form-horizontal" role="form">
-      <div class="form-group">
-        <label for="nombre" class="col-sm-2 control-label">Nombre</label>
-
-        <div class="col-sm-10">
-          <input ng-model="ficha.nombre" type="text" class="form-control" id="nombre" placeholder="Nombre">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="nif" class="col-sm-2 control-label">NIF</label>
-
-        <div class="col-sm-10">
-          <input ng-model="ficha.nif" type="text" class="form-control" id="nif" placeholder="00112233A ó B00112233">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="email" class="col-sm-2 control-label">Email, {{fichaForm.email.$invalid}}</label>
-
-        <div class="col-sm-10">
-          <div class="input-group">
-            <input ng-model="email" name="email" type="email" class="form-control" id="email" placeholder="nombre@dominio.com">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button" ng-disabled="!email || fichaForm.email.$invalid" ng-click="addEmail()">Añadir email</button>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group" ng-show="ficha.emails.length">
-        <div class="col-sm-offset-2 col-sm-10">
-          <ul class="emails">
-            <li ng-repeat="email in ficha.emails">{{email}}</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="telefono" class="col-sm-2 control-label">Teléfono</label>
-
-        <div class="col-sm-10">
-          <div class="input-group">
-            <input ng-model="telefono" type="text" class="form-control" id="telefono" placeholder="943012345">
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button" ng-disabled="!telefono" ng-click="addTelefono()">Añadir teléfono</button>
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group" ng-show="ficha.telefonos.length">
-        <div class="col-sm-offset-2 col-sm-10">
-          <ul class="telefonos">
-            <li ng-repeat="telefono in ficha.telefonos">{{telefono}} <a ng-click="removeTelefono(telefono)">X</a></li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="direccion" class="col-sm-2 control-label">Dirección</label>
-
-        <div class="col-sm-10">
-          <input ng-model="ficha.direccion" type="text" class="form-control" id="direccion"
-                 placeholder="Rúe del Percebe 13, 2º A">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="localidad" class="col-sm-2 control-label">Localidad</label>
-
-        <div class="col-sm-10">
-          <input ng-model="ficha.localidad" type="text" class="form-control" id="localidad" placeholder="Torrelavieja">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="codigo_postal" class="col-sm-2 control-label">Código Postal</label>
-
-        <div class="col-sm-10">
-          <input ng-model="ficha.codigo_postal" type="text" class="form-control" id="codigo_postal" placeholder="20010">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="provincia" class="col-sm-2 control-label">Provincia</label>
-
-        <div class="col-sm-10">
-          <input ng-model="ficha.provincia" type="text" class="form-control" id="provincia" placeholder="Huesca">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="pais" class="col-sm-2 control-label">País</label>
-
-        <div class="col-sm-10">
-          <input ng-model="ficha.pais" type="text" class="form-control" id="pais" placeholder="España">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-          <div class="btn-group">
-            <button type="submit" class="btn btn-primary" ng-click="create()">Crear</button>
-            <button type="submit" class="btn btn-danger" ng-click="showCrear=false">Cancelar</button>
-          </div>
-        </div>
-      </div>
-    </form>
+<div class="row" ng-hide="fichas.length">
+  <div class="col-lg-12">
+    <div class="input-group">
+      <button type="button" class="btn btn-primary" ng-click="irACrear()">Crear la primera ficha</button>
+    </div>
   </div>
 </div>
 
-<div class="row">
+<div class="row" ng-show="fichas.length">
   <div class="col-lg-12">
     <div class="input-group">
       <span class="input-group-btn">
-        <button type="button" class="btn btn-primary" ng-disabled="showCrear" ng-click="showCrear=true">Crear</button>
+        <button type="button" class="btn btn-primary" ng-click="irACrear()">Crear</button>
         <button type="button" class="btn btn-default" ng-disabled="true">Editar</button>
-        <button type="button" class="btn btn-danger" ng-disabled="true">Borrar</button>
+        <button type="button" class="btn btn-default" ng-disabled="true">Borrar</button>
       </span>
       <span class="input-group-addon">Filtrar</span>
-      <input type="text" class="form-control" placeholder="Pon algo para filtrar resultados">
+      <input ng-model="filtro" type="text" class="form-control" placeholder="Pon algo para filtrar resultados">
     </div>
     <!-- /input-group -->
   </div>
@@ -154,7 +46,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="ficha in fichas">
+        <tr ng-repeat="ficha in fichas | filtroFicha:filtro">
           <td ng-bind="ficha.numero"></td>
           <td ng-bind="ficha.nombre"></td>
           <td ng-bind="ficha.nif"></td>
@@ -171,8 +63,10 @@
           <td ng-bind="ficha.direccion"></td>
           <td ng-bind="ficha.localidad"></td>
           <td ng-bind="ficha.codigo_postal"></td>
-          <td ng-bind="ficha.provincia"></td>
-          <td><a ng-click="borrar(ficha)">X</a></td>
+          <td ng-bind-template="{{ficha.provincia}} ({{ficha.pais}})"></td>
+          <td>
+            <button class="btn btn-danger" ng-click="borrar(ficha)">Borrar</button>
+          </td>
         </tr>
         </tbody>
       </table>
