@@ -1,4 +1,6 @@
 define(['angular', 'ng/apuntes/ListaController', 'angular-route'], function (angular, ListaController) {
+  'use strict';
+
   var name = 'apuntes';
 
   return function () {

@@ -1,4 +1,6 @@
 define([], function () {
+  'use strict';
+
   function NavBarController($scope, appApi) {
     $scope.fichas = function () {
       $scope.active = 'fichas';

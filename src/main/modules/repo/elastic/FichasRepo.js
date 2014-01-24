@@ -1,4 +1,6 @@
 define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, Ficha) {
+  'use strict';
+
   var id_secuencia_numero_ficha = 'numero_ficha';
 
   function connect() {
@@ -16,21 +18,28 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
     return client;
   }
 
-  return function () {
-    var client = connect();
+  function Sequence(client) {
+    return {
+      next: function () {
+        return client
+            .index({
+              index: 'clavicon',
+              type: 'secuencia',
+              id: id_secuencia_numero_ficha,
+              body: {}
+            })
+            .then(function (result) {
+              return result._version;
+            });
+      }
+    };
+  }
 
-    function getNextNumero() {
-      return client
-          .index({
-            index: 'clavicon',
-            type: 'secuencia',
-            id: id_secuencia_numero_ficha,
-            body: {}
-          })
-          .then(function (result) {
-            return result._version;
-          });
-    }
+  return function () {
+    var client = connect(),
+        sequences = {
+          numero: new Sequence(client)
+        };
 
     function all() {
       return client
@@ -63,15 +72,7 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
       return  ficha;
     }
 
-    function assignNumero(ficha) {
-      return getNextNumero()
-          .then(function (nextNumero) {
-            ficha.numero = nextNumero;
-            return ficha;
-          })
-    }
-
-    function save(ficha) {
+    function persist(ficha) {
       return client
           .index({
             index: 'clavicon',
@@ -80,12 +81,6 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
             refresh: true
           })
           .then(all);
-    }
-
-    function persist(ficha) {
-      if (!ficha.numero)
-        return assignNumero(ficha).then(save);
-      return save(ficha);
     }
 
     function remove(ficha) {
@@ -101,7 +96,8 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
       all: all,
       create: create,
       persist: persist,
-      remove: remove
+      remove: remove,
+      sequences: sequences
     };
-  }
+  };
 });

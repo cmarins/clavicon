@@ -1,7 +1,10 @@
 define(['repo/inMemory/FichasRepo'], function (FichasRepo) {
-  return function () {
+  'use strict';
+
+  return function (data) {
+
     return {
-      fichas: FichasRepo()
+      fichas: FichasRepo(data)
     };
   };
 });

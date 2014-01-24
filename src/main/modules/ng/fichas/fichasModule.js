@@ -1,4 +1,6 @@
 define(['angular', 'ng/fichas/FiltroFicha', 'ng/fichas/ListaController', 'ng/fichas/CrearController', 'angular-route'], function (angular, FiltroFicha, ListaController, CrearController) {
+  'use strict';
+
   var name = 'fichas';
 
   return function () {

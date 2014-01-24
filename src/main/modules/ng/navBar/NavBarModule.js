@@ -1,4 +1,5 @@
 define(['angular', 'ng/navBar/NavBarController'], function (angular, NavBarController) {
+  'use strict';
 
   return function () {
     var moduleName = 'navBar';

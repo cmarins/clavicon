@@ -1,5 +1,5 @@
 (function (require) {
-  "use strict";
+  'use strict';
   require.config({
     paths: {
       'angular': '../../../bower_components/angular/angular',
@@ -15,7 +15,8 @@
   });
 
   require(["app/AppFactory", "repo/repoFactory", "ng/WebFactory"], function (AppFactory, repoFactory, WebFactory) {
-    var repo = repoFactory.elastic();
-    AppFactory(repo, WebFactory).bootstrap(document);
+    var elasticRepo = repoFactory.elastic();
+    var app = AppFactory(elasticRepo, WebFactory);
+    app.bootstrap(document);
   });
 }(require));

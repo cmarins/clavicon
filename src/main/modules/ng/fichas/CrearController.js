@@ -1,7 +1,8 @@
 define([], function () {
+  'use strict';
+
   function ListaController($scope, appApi) {
     function crear() {
-      console.log("CREAR");
       appApi.execute(appApi.useCases.fichas.crear, $scope.ficha);
     }
 
@@ -25,7 +26,7 @@ define([], function () {
       $scope.ficha.telefonos.splice($scope.ficha.telefonos.indexOf(telefono), 1);
     }
 
-    function cancelar($event) {
+    function cancelar() {
       appApi.execute(appApi.useCases.fichas.cancelarCrear);
     }
 
@@ -46,7 +47,6 @@ define([], function () {
 
     $scope.ficha = {};
     $scope.$on('data', function (event, args) {
-      console.log("Recibida ficha vacía", args[0]);
       $scope.ficha = args[0];
     });
   }

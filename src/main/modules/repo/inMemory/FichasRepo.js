@@ -1,10 +1,21 @@
 define(['repo/domain/Ficha'], function (Ficha) {
-  var secuencias = {
-    numero: 0
-  };
+  'use strict';
+
+  function Sequence(start) {
+    return {
+      next: function() {
+        return ++start;
+      }
+    };
+  }
+
 
   return function (fichas) {
     fichas = !!fichas ? fichas : [];
+
+    var sequences = {
+      numero: new Sequence(0)
+    };
 
     function all() {
       return fichas;
@@ -26,8 +37,6 @@ define(['repo/domain/Ficha'], function (Ficha) {
     }
 
     function persist(ficha) {
-      if (!ficha.numero)
-        ficha.numero = ++secuencias.numero
       fichas.push(ficha);
       return fichas;
     }
@@ -41,7 +50,8 @@ define(['repo/domain/Ficha'], function (Ficha) {
       all: all,
       create: create,
       persist: persist,
-      remove: remove
+      remove: remove,
+      sequences: sequences
     };
-  }
+  };
 });

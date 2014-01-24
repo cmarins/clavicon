@@ -1,8 +1,10 @@
 define([], function () {
-  function ListaController($scope, $location) {
+  'use strict';
 
+  function ListaController($scope) {
+    $scope.apuntes = [];
   }
 
-  ListaController.$inject = ['$scope', '$location'];
+  ListaController.$inject = ['$scope'];
   return ListaController;
 });

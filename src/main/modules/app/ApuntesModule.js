@@ -1,6 +1,7 @@
-define(['Q'], function (Q) {
+define([], function () {
+  'use strict';
 
-  function ApuntesApp(repo) {
+  function ApuntesApp() {
     var webApi;
 
     function setWebApi(_webApi) {
@@ -12,10 +13,11 @@ define(['Q'], function (Q) {
     }
 
     return {
-      setWebApi: setWebApi,
+      name: 'apuntes',
       useCases: {
         irAListado: 'apuntes.irAListado'
       },
+      setWebApi: setWebApi,
       init: transitionToListado,
       irAListado: transitionToListado
     };
