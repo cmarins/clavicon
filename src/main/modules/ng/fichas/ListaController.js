@@ -1,7 +1,7 @@
 define([], function () {
   'use strict';
 
-  function ListaController($scope, appApi) {
+  function ListaController($scope, appApi, Pagination) {
     function borrar(ficha) {
       appApi.execute(appApi.useCases.fichas.borrar, ficha);
     }
@@ -15,6 +15,7 @@ define([], function () {
     }
 
     $scope.fichas = [];
+    $scope.pagination = Pagination.create(10, 5);
 
     $scope.borrar = borrar;
     $scope.irACrear = irACrear;
@@ -22,9 +23,10 @@ define([], function () {
 
     $scope.$on('data', function (event, args) {
       $scope.fichas = args[0];
+      $scope.pagination.totalItems(args[0].length);
     });
   }
 
-  ListaController.$inject = ['$scope', 'appApi'];
+  ListaController.$inject = ['$scope', 'appApi', 'Pagination'];
   return ListaController;
 });

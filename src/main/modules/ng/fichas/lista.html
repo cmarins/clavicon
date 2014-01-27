@@ -18,8 +18,6 @@
     <div class="input-group">
       <span class="input-group-btn">
         <button type="button" class="btn btn-primary" ng-click="irACrear()">Crear</button>
-        <button type="button" class="btn btn-default" ng-disabled="true">Editar</button>
-        <button type="button" class="btn btn-default" ng-disabled="true">Borrar</button>
       </span>
       <span class="input-group-addon">Filtrar</span>
       <input ng-model="filtro" type="text" class="form-control" placeholder="Pon algo para filtrar resultados">
@@ -47,7 +45,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="ficha in fichas | filtroFicha:filtro">
-          <td><button ng-click="irAEditar(ficha)" ng-bind="ficha.numero" class="btn btn-default"></button></td>
+          <td><button ng-click="irAEditar(ficha)" class="btn btn-default" title="Editar esta ficha"><span class="glyphicon glyphicon-edit"></span> {{ficha.numero}}</button></td>
           <td ng-bind="ficha.nombre"></td>
           <td ng-bind="ficha.nif"></td>
           <td>
@@ -65,20 +63,12 @@
           <td ng-bind="ficha.codigo_postal"></td>
           <td ng-bind-template="{{ficha.provincia}} ({{ficha.pais}})"></td>
           <td>
-            <button class="btn btn-danger" ng-click="borrar(ficha)">Borrar</button>
+            <button class="btn btn-danger" ng-click="borrar(ficha)" title="Borrar esta ficha"><span class="glyphicon glyphicon-remove"></span></button>
           </td>
         </tr>
         </tbody>
       </table>
-      <ul class="pagination">
-        <li><a href="#">&laquo;</a></li>
-        <li><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">&raquo;</a></li>
-      </ul>
+      <pagination-links pagination="pagination"></pagination-links>
     </div>
   </div>
 </div>

@@ -1,10 +1,10 @@
-define(['angular', 'ng/WebApi', 'ng/navBar/NavBarModule', 'ng/fichas/fichasModule', 'ng/apuntes/ApuntesModule'], function (angular, WebApi, NavBar, Fichas, Apuntes) {
+define(['angular', 'ng/WebApi', 'ng/navBar/NavBarModule', 'ng/html/HtmlModule', 'ng/fichas/FichasModule', 'ng/apuntes/ApuntesModule'], function (angular, WebApi, NavBar, Html, Fichas, Apuntes) {
   'use strict';
 
   var appName = 'web';
 
   function WebFactory() {
-    var webApp = angular.module(appName, [NavBar(), Fichas(), Apuntes()]),
+    var webApp = angular.module(appName, [NavBar(), Html(), Fichas(), Apuntes()]),
         api;
 
     function bootstrap(appApi, element) {
