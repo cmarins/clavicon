@@ -86,7 +86,7 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
        * Copio la ficha para que no hagamos el lelo modificando la misma referencia en memoria,
        * lo que provocaría un falso positivo
        **/
-      app = AppFactory(RepoFactory.inMemory([new Ficha(ficha)]), web.factory);
+      app = AppFactory(RepoFactory({itemsPerPage: 10}).inMemory([new Ficha(ficha)]), web.factory);
     });
 
     it("obtiene la ficha y te manda a su edición", function () {

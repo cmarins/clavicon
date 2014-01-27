@@ -16,7 +16,7 @@
 
   require(["app/AppFactory", "repo/RepoFactory", "ng/WebFactory"], function (AppFactory, RepoFactory, WebFactory) {
     var config = {
-      itemsPerPage: 2
+      itemsPerPage: 10
     };
     var elasticRepo = RepoFactory(config).elastic();
     var webFactory = WebFactory(config);
