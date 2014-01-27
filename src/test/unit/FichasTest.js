@@ -12,6 +12,9 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
 
     function webApi() {
       return {
+        show: function (_data) {
+          data = _data;
+        },
         transitionAndShow: function (_view, _data) {
           view = _view;
           data = _data;
@@ -41,13 +44,30 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
       var fichasPorPagina = 10, fichas;
       beforeEach(function () {
         fichas = [];
-        for (var i = 0; i < 100; i++)
-          fichas.push(new Ficha());
+        for (var i = 1; i <= 100; i++)
+          fichas.push(new Ficha({numero: i}));
         web = TestWeb();
         app = AppFactory(RepoFactory({itemsPerPage: fichasPorPagina}).inMemory(fichas), web.factory);
       });
 
       it("Por defecto se ven las primeras X fichas", function () {
+        var pagina = 2;
+        runs(function () {
+          app.bootstrap();
+          app.api.execute(app.api.useCases.fichas.cambiarPagina, pagina);
+        });
+        waitsFor(function () {
+          return web.status().data;
+        });
+        runs(function () {
+          // Los números de las fichas de este test son consecutivos del 1 al 100
+          // pagina 2 => [11..20]
+          expect(web.status().data.fichas[0].numero).toBe((pagina - 1) * fichasPorPagina + 1);
+          expect(web.status().data.fichas[9].numero).toBe(pagina * fichasPorPagina);
+        });
+      });
+
+      it("Permite cambiar a otra página", function () {
         runs(function () {
           app.bootstrap();
           app.api.execute(app.api.useCases.fichas.irAListado);
@@ -60,10 +80,6 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
           expect(web.status().data.fichas.length).toBe(fichasPorPagina);
           expect(web.status().data.total).toBe(fichas.length);
         });
-      });
-
-      xit("Permite cambiar a otra página", function() {
-
       });
     });
 
@@ -147,6 +163,30 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
         expect(web.status().data.total).toBe(1);
         expect(web.status().data.fichas[0].numero).toBe(ficha.numero);
         expect(web.status().data.fichas[0].nombre).toBe(ficha.nombre);
+      });
+    });
+  });
+
+  describe("Permite borrar una ficha existente", function () {
+    var ficha;
+
+    beforeEach(function () {
+      ficha = new Ficha({numero: 42, nombre: 'Cocotero'});
+      web = TestWeb();
+      app = AppFactory(RepoFactory({itemsPerPage: 10}).inMemory([ficha]), web.factory);
+    });
+
+    it("borra la ficha y te manda al listado y la ficha ya no está", function () {
+      runs(function () {
+        app.bootstrap();
+        app.api.execute(app.api.useCases.fichas.borrar, ficha);
+      });
+      waitsFor(function () {
+        return web.status().view;
+      });
+      runs(function () {
+        expect(web.status().view).toBe('/fichas');
+        expect(web.status().data.total).toBe(0);
       });
     });
   });
