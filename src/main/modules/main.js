@@ -16,6 +16,12 @@
 
   require(["app/AppFactory", "repo/RepoFactory", "ng/WebFactory"], function (AppFactory, RepoFactory, WebFactory) {
     var config = {
+      elastic: {
+        index: 'clavicon',
+        host: 'localhost:9200',
+        apiVersion: '1.0',
+        log: 'warning'
+      },
       itemsPerPage: 10
     };
     var elasticRepo = RepoFactory(config).elastic();

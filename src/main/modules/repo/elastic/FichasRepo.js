@@ -1,29 +1,16 @@
 define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, Ficha) {
   'use strict';
 
-  var id_secuencia_numero_ficha = 'numero_ficha';
+  var type = 'ficha',
+      id_secuencia_numero_ficha = 'numero_ficha';
 
-  function connect() {
-    var client = new elasticsearch.Client({
-      host: 'localhost:9200',
-      log: 'warning',
-      apiVersion: '1.0'
-    });
-    client.ping({
-      requestTimeout: 1000
-    }, function (error) {
-      if (error)
-        throw new Error('El cluster de ElasticSearch está caído');
-    });
-    return client;
-  }
-
-  function Sequence(client) {
+  // TODO Extraer a su propio repo
+  function Sequence(client, config) {
     return {
       next: function () {
         return client
             .index({
-              index: 'clavicon',
+              index: config.elastic.index,
               type: 'secuencia',
               id: id_secuencia_numero_ficha,
               body: {}
@@ -36,16 +23,31 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
   }
 
   return function (config) {
+    function connect() {
+      var client = new elasticsearch.Client({
+        host: config.elastic.host,
+        apiVersion: config.elastic.apiVersion,
+        log: config.elastic.log
+      });
+      client.ping({
+        requestTimeout: 1000
+      }, function (error) {
+        if (error)
+          throw new Error('El cluster de ElasticSearch está caído');
+      });
+      return client;
+    }
+
     var client = connect(),
         sequences = {
-          numero: new Sequence(client)
+          numero: new Sequence(client, config)
         };
 
     function all() {
       return client
           .search({
-            index: 'clavicon',
-            type: 'ficha',
+            index: config.elastic.index,
+            type: type,
             _source: true,
             size: 50000,
             sort: ['numero']
@@ -62,8 +64,8 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
     function page(number) {
       return client
           .search({
-            index: 'clavicon',
-            type: 'ficha',
+            index: config.elastic.index,
+            type: type,
             _source: true,
             from: (number - 1) * config.itemsPerPage,
             size: config.itemsPerPage,
@@ -92,8 +94,8 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
       else
         client
             .exists({
-              index: 'clavicon',
-              type: 'ficha',
+              index: config.elastic.index,
+              type: type,
               id: ficha.id
             }, function (err, exists) {
               if (exists)
@@ -106,8 +108,8 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
 
     function update(ficha) {
       return client.index({
-        index: 'clavicon',
-        type: 'ficha',
+        index: config.elastic.index,
+        type: type,
         id: ficha.id,
         refresh: true,
         body: ficha
@@ -116,8 +118,8 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
 
     function insert(ficha) {
       return client.index({
-        index: 'clavicon',
-        type: 'ficha',
+        index: config.elastic.index,
+        type: type,
         refresh: true,
         body: ficha
       });
@@ -129,18 +131,19 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
 
     function remove(ficha) {
       return client.delete({
-        index: 'clavicon',
-        type: 'ficha',
+        index: config.elastic.index,
+        type: type,
         id: ficha.id,
         refresh: true
       });
     }
 
     function withNumero(numero) {
+
       return client
           .search({
-            index: 'clavicon',
-            type: 'ficha',
+            index: config.elastic.index,
+            type: type,
             body: {
               query: {
                 filtered: {
