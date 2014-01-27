@@ -21,7 +21,10 @@ define(['repo/domain/Ficha'], function (Ficha) {
     }
 
     function page(number) {
-      return fichas.slice((number - 1) * config.itemsPerPage, number * config.itemsPerPage);
+      return {
+        fichas: fichas.slice((number - 1) * config.itemsPerPage, number * config.itemsPerPage),
+        total: fichas.length
+      };
     }
 
     function create(data) {

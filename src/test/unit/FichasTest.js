@@ -37,6 +37,36 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
   describe("El módulo de Fichas", function () {
     var app, web;
 
+    describe("Permite ver las fichas existentes", function () {
+      var fichasPorPagina = 10, fichas;
+      beforeEach(function () {
+        fichas = [];
+        for (var i = 0; i < 100; i++)
+          fichas.push(new Ficha());
+        web = TestWeb();
+        app = AppFactory(RepoFactory({itemsPerPage: fichasPorPagina}).inMemory(fichas), web.factory);
+      });
+
+      it("Por defecto se ven las primeras X fichas", function () {
+        runs(function () {
+          app.bootstrap();
+          app.api.execute(app.api.useCases.fichas.irAListado);
+        });
+        waitsFor(function () {
+          return web.status().view;
+        });
+        runs(function () {
+          expect(web.status().view).toBe('/fichas');
+          expect(web.status().data.fichas.length).toBe(fichasPorPagina);
+          expect(web.status().data.total).toBe(fichas.length);
+        });
+      });
+
+      xit("Permite cambiar a otra página", function() {
+
+      });
+    });
+
     describe("Permite crear fichas nuevas", function () {
       var ficha = new Ficha({nombre: 'Cocotero'});
       beforeEach(function () {
@@ -68,9 +98,9 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
       });
       runs(function () {
         expect(web.status().view).toBe("/fichas");
-        expect(web.status().data.length).toBe(1);
-        expect(web.status().data[0].numero).toBe(1);
-        expect(web.status().data[0].nombre).toBe(ficha.nombre);
+        expect(web.status().data.total).toBe(1);
+        expect(web.status().data.fichas[0].numero).toBe(1);
+        expect(web.status().data.fichas[0].nombre).toBe(ficha.nombre);
       });
     });
 
@@ -114,9 +144,9 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
       });
       runs(function () {
         expect(web.status().view).toBe('/fichas');
-        expect(web.status().data.length).toBe(1);
-        expect(web.status().data[0].numero).toBe(ficha.numero);
-        expect(web.status().data[0].nombre).toBe(ficha.nombre);
+        expect(web.status().data.total).toBe(1);
+        expect(web.status().data.fichas[0].numero).toBe(ficha.numero);
+        expect(web.status().data.fichas[0].nombre).toBe(ficha.nombre);
       });
     });
   });
