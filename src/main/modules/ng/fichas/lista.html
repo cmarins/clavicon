@@ -47,7 +47,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="ficha in fichas | filtroFicha:filtro">
-          <td ng-bind="ficha.numero"></td>
+          <td><button ng-click="irAEditar(ficha)" ng-bind="ficha.numero" class="btn btn-default"></button></td>
           <td ng-bind="ficha.nombre"></td>
           <td ng-bind="ficha.nif"></td>
           <td>

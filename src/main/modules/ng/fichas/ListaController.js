@@ -10,10 +10,15 @@ define([], function () {
       appApi.execute(appApi.useCases.fichas.irACrear);
     }
 
+    function irAEditar(ficha) {
+      appApi.execute(appApi.useCases.fichas.irAEditar, ficha);
+    }
+
     $scope.fichas = [];
 
     $scope.borrar = borrar;
     $scope.irACrear = irACrear;
+    $scope.irAEditar = irAEditar;
 
     $scope.$on('data', function (event, args) {
       $scope.fichas = args[0];

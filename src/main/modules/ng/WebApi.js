@@ -29,7 +29,7 @@ define([], function () {
     function transitionAndShow(target, data) {
       setTimeout(function () {
         var eventDeregistration = $rootScope.$on('$routeChangeSuccess', function (event, route) {
-          if (!!route && route.$$route.originalPath == target) {
+          if (!!route && route.regexp.test(target)) {
             show(data);
             eventDeregistration();
           }

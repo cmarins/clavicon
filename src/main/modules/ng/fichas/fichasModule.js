@@ -1,4 +1,9 @@
-define(['angular', 'ng/fichas/FiltroFicha', 'ng/fichas/ListaController', 'ng/fichas/CrearController', 'angular-route'], function (angular, FiltroFicha, ListaController, CrearController) {
+define(['angular',
+  'ng/fichas/FiltroFicha',
+  'ng/fichas/ListaController',
+  'ng/fichas/EditarController',
+  'ng/fichas/FichasFormDirective',
+  'angular-route'], function (angular, FiltroFicha, ListaController, EditarController, FichasFormDirective) {
   'use strict';
 
   var name = 'fichas';
@@ -7,6 +12,7 @@ define(['angular', 'ng/fichas/FiltroFicha', 'ng/fichas/ListaController', 'ng/fic
     angular
         .module(name, ['ngRoute'])
         .filter('filtroFicha', FiltroFicha)
+        .directive('fichasForm', FichasFormDirective)
         .config(['$routeProvider', function ($routeProvider) {
           $routeProvider.when('/fichas', {
             templateUrl: 'modules/ng/fichas/lista.html',
@@ -15,7 +21,12 @@ define(['angular', 'ng/fichas/FiltroFicha', 'ng/fichas/ListaController', 'ng/fic
 
           $routeProvider.when('/fichas/crear', {
             templateUrl: 'modules/ng/fichas/crear.html',
-            controller: CrearController
+            controller: EditarController
+          });
+
+          $routeProvider.when('/fichas/:numero', {
+            templateUrl: 'modules/ng/fichas/editar.html',
+            controller: EditarController
           });
         }]);
     return name;

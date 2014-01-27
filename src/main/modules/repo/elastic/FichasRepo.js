@@ -46,41 +46,63 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
           .search({
             index: 'clavicon',
             type: 'ficha',
-            _source: true
+            _source: true,
+            size: 50000,
+            sort:['numero']
           })
           .then(function (result) {
             return result.hits.hits.map(function (hit) {
-              var ficha = hit._source;
+              var ficha = new Ficha(hit._source);
               ficha.id = hit._id;
               return ficha;
             });
           });
     }
 
-    // TODO Extraer a una factoría en Ficha
     function create(data) {
-      var ficha = Ficha();
-      ficha.nombre = data.nombre;
-      ficha.nif = data.nif;
-      ficha.emails = data.emails || [];
-      ficha.telefonos = data.telefonos || [];
-      ficha.direccion = data.direccion;
-      ficha.localidad = data.localidad;
-      ficha.codigo_postal = data.codigo_postal;
-      ficha.provincia = data.provincia;
-      ficha.pais = data.pais;
-      return  ficha;
+      return new Ficha(data);
+    }
+
+    function exists(ficha) {
+      var d = Q.defer();
+      if (!ficha.id)
+        d.reject(ficha);
+      else
+        client
+            .exists({
+              index: 'clavicon',
+              type: 'ficha',
+              id: ficha.id
+            }, function (err, exists) {
+              if (exists)
+                d.resolve(ficha);
+              else
+                d.reject(ficha);
+            });
+      return d.promise;
+    }
+
+    function update(ficha) {
+      return client.index({
+        index: 'clavicon',
+        type: 'ficha',
+        id: ficha.id,
+        refresh: true,
+        body: ficha
+      });
+    }
+
+    function insert(ficha) {
+      return client.index({
+        index: 'clavicon',
+        type: 'ficha',
+        refresh: true,
+        body: ficha
+      });
     }
 
     function persist(ficha) {
-      return client
-          .index({
-            index: 'clavicon',
-            type: 'ficha',
-            body: ficha,
-            refresh: true
-          })
-          .then(all);
+      return exists(ficha).then(update, insert).then(all);
     }
 
     function remove(ficha) {
@@ -101,9 +123,7 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
               query: {
                 filtered: {
                   query: {match_all: {}},
-                  filter: {
-                    term: {numero: numero}
-                  }
+                  filter: {term: {numero: numero}}
                 }
               },
               size: 1
@@ -112,7 +132,7 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
           .then(function (result) {
             if (result.hits.hits.length === 0)
               return null;
-            var ficha = result.hits.hits[0]._source;
+            var ficha = new Ficha(result.hits.hits[0]._source);
             ficha.id = result.hits.hits[0]._id;
             return ficha;
           });

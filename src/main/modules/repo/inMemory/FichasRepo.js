@@ -3,12 +3,11 @@ define(['repo/domain/Ficha'], function (Ficha) {
 
   function Sequence(start) {
     return {
-      next: function() {
+      next: function () {
         return ++start;
       }
     };
   }
-
 
   return function (fichas) {
     fichas = !!fichas ? fichas : [];
@@ -21,23 +20,32 @@ define(['repo/domain/Ficha'], function (Ficha) {
       return fichas;
     }
 
-    // TODO Extraer a una factoría en Ficha
     function create(data) {
-      var ficha = Ficha();
-      ficha.nombre = data.nombre;
-      ficha.nif = data.nif;
-      ficha.emails = data.emails || [];
-      ficha.telefonos = data.telefonos || [];
-      ficha.direccion = data.direccion;
-      ficha.localidad = data.localidad;
-      ficha.codigo_postal = data.codigo_postal;
-      ficha.provincia = data.provincia;
-      ficha.pais = data.pais;
-      return  ficha;
+      return new Ficha(data);
+    }
+
+    function exists(ficha) {
+      return fichas.some(function (candidate) {
+        return candidate.numero == ficha.numero;
+      });
+    }
+
+    function insert(ficha) {
+      fichas.push(ficha);
+    }
+
+    function replace(ficha) {
+      fichas = fichas.filter(function (candidate) {
+        return candidate.numero != ficha.numero;
+      });
+      fichas.push(ficha);
     }
 
     function persist(ficha) {
-      fichas.push(ficha);
+      if (!exists(ficha))
+        insert(ficha);
+      else
+        replace(ficha);
       return fichas;
     }
 
