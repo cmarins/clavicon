@@ -7,10 +7,10 @@ define([], function () {
       replace: true,
       transclude: true,
       templateUrl: 'modules/ng/fichas/_form.html',
-      scope: {
+      scope: {
         ficha: '='
       },
-      controller: ['$scope', function($scope) {
+      controller: ['$scope', function ($scope) {
         function addEmail() {
           if ($scope.ficha.emails.indexOf($scope.email) == -1)
             $scope.ficha.emails.push($scope.email);
@@ -31,10 +31,11 @@ define([], function () {
           $scope.ficha.telefonos.splice($scope.ficha.telefonos.indexOf(telefono), 1);
         }
 
-        function execIfEnterPressed(callback, $event) {
+        function execIfEnterPressed(callback, $event, ignore) {
           if ($event.keyCode == 13) {
             $event.preventDefault();
-            $scope[callback].call(null);
+            if (!ignore)
+              $scope[callback].call(null);
           }
         }
 

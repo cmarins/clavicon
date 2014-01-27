@@ -22,7 +22,7 @@
       <div class="input-group">
         <input ng-model="email" name="email" type="email" class="form-control" id="email"
                placeholder="nombre@dominio.com" ng-focus="email = ''"
-               ng-keypress="execIfEnterPressed('addEmail', $event)">
+               ng-keypress="execIfEnterPressed('addEmail', $event, !email || fichaForm.email.$invalid)">
             <span class="input-group-btn">
               <button class="btn btn-default" type="button" ng-disabled="!email || fichaForm.email.$invalid"
                       ng-click="addEmail()">Añadir email
@@ -46,7 +46,7 @@
     <div class="col-sm-10">
       <div class="input-group">
         <input ng-model="telefono" type="text" class="form-control" id="telefono" placeholder="943012345"
-               ng-focus="telefono = ''" ng-keypress="execIfEnterPressed('addTelefono', $event)">
+               ng-focus="telefono = ''" ng-keypress="execIfEnterPressed('addTelefono', $event, !telefono || fichaForm.telefono.$invalid)">
             <span class="input-group-btn">
               <button class="btn btn-default" type="button" ng-disabled="!telefono" ng-click="addTelefono()">
                 Añadir
