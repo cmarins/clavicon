@@ -8,7 +8,7 @@
 <div class="row" ng-hide="fichas.length">
   <div class="col-lg-12">
     <div class="input-group">
-      <button type="button" class="btn btn-primary" ng-click="irACrear()">Crear la primera ficha</button>
+      <button type="button" class="btn btn-primary" ng-click="irACrear()"><span class="glyphicon glyphicon-plus"></span> Crear la primera ficha</button>
     </div>
   </div>
 </div>
@@ -17,9 +17,9 @@
   <div class="col-lg-12">
     <div class="input-group">
       <span class="input-group-btn">
-        <button type="button" class="btn btn-primary" ng-click="irACrear()">Crear</button>
+        <button type="button" class="btn btn-primary" ng-click="irACrear()"><span class="glyphicon glyphicon-plus"></span> Crear</button>
       </span>
-      <span class="input-group-addon">Filtrar</span>
+      <span class="input-group-addon "><span class="glyphicon glyphicon-filter"></span> Filtrar</span>
       <input ng-model="filtro" type="text" class="form-control" placeholder="Pon algo para filtrar resultados">
     </div>
     <!-- /input-group -->
@@ -45,7 +45,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="ficha in fichas | filtroFicha:filtro">
-          <td><button ng-click="irAEditar(ficha)" class="btn btn-default" title="Editar esta ficha"><span class="glyphicon glyphicon-edit"></span> {{ficha.numero}}</button></td>
+          <td><button ng-click="irAEditar(ficha)" class="btn btn-default" title="Editar esta ficha"><span class="glyphicon glyphicon-pencil"></span> {{ficha.numero}}</button></td>
           <td ng-bind="ficha.nombre"></td>
           <td ng-bind="ficha.nif"></td>
           <td>
