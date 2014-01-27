@@ -13,6 +13,7 @@ define([], function () {
   };
 
   Pagination.prototype.totalItems = function (items) {
+    this.itemCount = items;
     this.total = Math.ceil(items / this.itemsPerPage);
   };
 
@@ -44,9 +45,13 @@ define([], function () {
     this.current = Math.min(this.total - 1, this.current + 1);
   };
 
-  return function() {
+  Pagination.prototype.showing = function () {
+    return this.atLast() ? this.itemCount - this.current * this.itemsPerPage : this.itemsPerPage;
+  };
+
+  return function () {
     return {
-      create: function(itemsPerPage, numberOfLinks) {
+      create: function (itemsPerPage, numberOfLinks) {
         return new Pagination(itemsPerPage || 10, numberOfLinks || 5);
       }
     };

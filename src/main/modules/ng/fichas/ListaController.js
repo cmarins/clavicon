@@ -1,7 +1,7 @@
 define([], function () {
   'use strict';
 
-  function ListaController($scope, appApi, Pagination) {
+  function ListaController($scope, config, appApi, Pagination) {
     function borrar(ficha) {
       appApi.execute(appApi.useCases.fichas.borrar, ficha);
     }
@@ -14,19 +14,25 @@ define([], function () {
       appApi.execute(appApi.useCases.fichas.irAEditar, ficha);
     }
 
+
     $scope.fichas = [];
-    $scope.pagination = Pagination.create(10, 5);
+    $scope.pagination = Pagination.create(config.itemsPerPage, 5);
 
     $scope.borrar = borrar;
     $scope.irACrear = irACrear;
     $scope.irAEditar = irAEditar;
 
+    $scope.$watch('pagination.current', function (currentPage, lastPage) {
+      if (currentPage != lastPage)
+        appApi.execute(appApi.useCases.fichas.cambiarPagina, currentPage + 1);
+    });
+
     $scope.$on('data', function (event, args) {
-      $scope.fichas = args[0];
-      $scope.pagination.totalItems(args[0].length);
+      $scope.fichas = args[0].fichas;
+      $scope.pagination.totalItems(args[0].total);
     });
   }
 
-  ListaController.$inject = ['$scope', 'appApi', 'Pagination'];
+  ListaController.$inject = ['$scope', 'config', 'appApi', 'Pagination'];
   return ListaController;
 });

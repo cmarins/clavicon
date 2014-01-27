@@ -35,7 +35,7 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
     };
   }
 
-  return function () {
+  return function (config) {
     var client = connect(),
         sequences = {
           numero: new Sequence(client)
@@ -48,7 +48,7 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
             type: 'ficha',
             _source: true,
             size: 50000,
-            sort:['numero']
+            sort: ['numero']
           })
           .then(function (result) {
             return result.hits.hits.map(function (hit) {
@@ -56,6 +56,28 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
               ficha.id = hit._id;
               return ficha;
             });
+          });
+    }
+
+    function page(number) {
+      return client
+          .search({
+            index: 'clavicon',
+            type: 'ficha',
+            _source: true,
+            from: (number - 1) * config.itemsPerPage,
+            size: config.itemsPerPage,
+            sort: ['numero']
+          })
+          .then(function (result) {
+            return {
+              fichas: result.hits.hits.map(function (hit) {
+                var ficha = new Ficha(hit._source);
+                ficha.id = hit._id;
+                return ficha;
+              }),
+              total: result.hits.total
+            };
           });
     }
 
@@ -140,6 +162,7 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
 
     return {
       all: all,
+      page: page,
       create: create,
       persist: persist,
       remove: remove,

@@ -1,4 +1,4 @@
-define(['app/AppFactory', 'repo/repoFactory', 'repo/domain/Ficha'], function (AppFactory, repoFactory, Ficha) {
+define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (AppFactory, RepoFactory, Ficha) {
   function TestWeb() {
     var view, data;
 
@@ -41,7 +41,7 @@ define(['app/AppFactory', 'repo/repoFactory', 'repo/domain/Ficha'], function (Ap
       var ficha = new Ficha({nombre: 'Cocotero'});
       beforeEach(function () {
         web = TestWeb();
-        app = AppFactory(repoFactory.inMemory([]), web.factory);
+        app = AppFactory(RepoFactory({itemsPerPage: 10}).inMemory([]), web.factory);
       });
 
       it("prepara una ficha vacía y te manda a crearla", function () {
@@ -86,7 +86,7 @@ define(['app/AppFactory', 'repo/repoFactory', 'repo/domain/Ficha'], function (Ap
        * Copio la ficha para que no hagamos el lelo modificando la misma referencia en memoria,
        * lo que provocaría un falso positivo
        **/
-      app = AppFactory(repoFactory.inMemory([new Ficha(ficha)]), web.factory);
+      app = AppFactory(RepoFactory.inMemory([new Ficha(ficha)]), web.factory);
     });
 
     it("obtiene la ficha y te manda a su edición", function () {
@@ -103,7 +103,7 @@ define(['app/AppFactory', 'repo/repoFactory', 'repo/domain/Ficha'], function (Ap
       });
     });
 
-    it("Guarda los cambios en la ficha y te manda al listado con la ficha modificada", function() {
+    it("Guarda los cambios en la ficha y te manda al listado con la ficha modificada", function () {
       runs(function () {
         app.bootstrap();
         ficha.nombre = 'Chuchu Blabla';

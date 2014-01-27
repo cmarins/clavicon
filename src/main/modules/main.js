@@ -14,9 +14,13 @@
     }
   });
 
-  require(["app/AppFactory", "repo/repoFactory", "ng/WebFactory"], function (AppFactory, repoFactory, WebFactory) {
-    var elasticRepo = repoFactory.elastic();
-    var app = AppFactory(elasticRepo, WebFactory);
+  require(["app/AppFactory", "repo/RepoFactory", "ng/WebFactory"], function (AppFactory, RepoFactory, WebFactory) {
+    var config = {
+      itemsPerPage: 2
+    };
+    var elasticRepo = RepoFactory(config).elastic();
+    var webFactory = WebFactory(config);
+    var app = AppFactory(elasticRepo, webFactory);
     app.bootstrap(document);
   });
 }(require));

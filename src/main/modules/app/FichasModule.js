@@ -9,7 +9,7 @@ define(['Q'], function (Q) {
     }
 
     function transitionToListado() {
-      Q.when(repo.fichas.all(), function (fichas) {
+      Q.when(repo.fichas.page(1), function (fichas) {
         webApi.transitionAndShow('/fichas', fichas);
       });
     }
@@ -20,6 +20,10 @@ define(['Q'], function (Q) {
 
     function transitionToEditar(ficha) {
       webApi.transitionAndShow('/fichas/' + ficha.numero, ficha);
+    }
+
+    function cambiarPagina(page) {
+      Q.when(repo.fichas.page(page), webApi.show);
     }
 
     function crear(data) {
@@ -53,7 +57,8 @@ define(['Q'], function (Q) {
         irAEditar: 'fichas.irAEditar',
         crear: 'fichas.crear',
         guardar: 'fichas.guardar',
-        borrar: 'fichas.borrar'
+        borrar: 'fichas.borrar',
+        cambiarPagina: 'fichas.cambiarPagina'
       },
       setWebApi: setWebApi,
       init: transitionToListado,
@@ -62,7 +67,8 @@ define(['Q'], function (Q) {
       irAEditar: transitionToEditar,
       crear: crear,
       guardar: guardar,
-      borrar: borrar
+      borrar: borrar,
+      cambiarPagina: cambiarPagina
     };
   }
 

@@ -16,11 +16,14 @@ define([], function () {
         pagination: '='
       },
       replace: true,
-      template: '<ul class="pagination" ng-show="pagination.total">' +
+      template: '<div>' +
+          '<ul class="pagination" ng-show="pagination.total">' +
           '<li><a ng-click="pagination.previous()"><span class="glyphicon glyphicon-chevron-left"></span></a></li>' +
-          '<li ng-repeat="link in links"><a ng-click="pagination.page(link.page)" ng-class="{selected: link.highlight}" ng-bind="link.number"></a></li>' +
+          '<li ng-repeat="link in links" ng-class="{active: pagination.at(link.page)}"><a ng-click="pagination.page(link.page)" ng-bind="link.number"></a></li>' +
           '<li><a ng-click="pagination.next()"><span class="glyphicon glyphicon-chevron-right"></span></a></li>' +
-          '</ul>',
+          '</ul>' +
+          '<p class="text-info">Mostrando {{pagination.showing()}} elementos de un total de {{pagination.itemCount}}</p>' +
+          '</div>',
       controller: function ($scope) {
         if (!$scope.pagination)
           throw new ReferenceError("Missing pagination object for pagination component");
@@ -33,8 +36,7 @@ define([], function () {
           for (var current = boundaries.lower; current < boundaries.upper; current++) {
             $scope.links.push({
               page: current,
-              number: current + 1,
-              highlight: $scope.pagination.at(current)
+              number: current + 1
             });
           }
         }
