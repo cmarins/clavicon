@@ -19,16 +19,10 @@
     // "/base" is the URL from where karma is serving project files
     baseUrl: '/base/src/main/modules',
     paths: {
-      'angular': '/base/bower_components/angular/angular',
-      'angular-route': '/base/bower_components/angular-route/angular-route',
-      'mocks': '/base/bower_components/angular-mocks/angular-mocks',
       'Q': '/base/bower_components/q/q',
       'elasticsearch': '/base/non_bower_components/elasticsearch-js/elasticsearch'
     },
     shim: {
-      'angular': { deps: [], exports: 'angular' },
-      'angular-route': { deps: ['angular'], exports: 'angular-route' },
-      'mocks': { deps: ['angular'], exports: 'mocks' },
       'elasticsearch': {exports: 'elasticsearch'}
     }
   }, allTestFiles, function () {

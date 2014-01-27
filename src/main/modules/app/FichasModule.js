@@ -18,12 +18,19 @@ define(['Q'], function (Q) {
       webApi.transitionAndShow('/fichas/crear', repo.fichas.create({}));
     }
 
+    function transitionToEditar(numeroFicha) {
+      Q.when(repo.fichas.withNumero(numeroFicha), function (ficha) {
+        webApi.transitionAndShow('/fichas/' + numeroFicha, ficha);
+      });
+    }
+
     function crear(data) {
       var ficha = repo.fichas.create(data);
-      Q.when(repo.fichas.sequences.numero.next(), function (numero) {
-        ficha.numero = numero;
-        return ficha;
-      })
+      Q
+          .when(repo.fichas.sequences.numero.next(), function (numero) {
+            ficha.numero = numero;
+            return ficha;
+          })
           .then(function (a) {
             return repo.fichas.persist(a);
           })
@@ -40,6 +47,7 @@ define(['Q'], function (Q) {
       useCases: {
         irAListado: 'fichas.irAListado',
         irACrear: 'fichas.irACrear',
+        irAEditar: 'fichas.irAEditar',
         crear: 'fichas.crear',
         cancelarCrear: 'fichas.cancelarCrear',
         borrar: 'fichas.borrar'
@@ -48,6 +56,7 @@ define(['Q'], function (Q) {
       init: transitionToListado,
       irAListado: transitionToListado,
       irACrear: transitionToCrear,
+      irAEditar: transitionToEditar,
       crear: crear,
       cancelarCrear: transitionToListado,
       borrar: borrar

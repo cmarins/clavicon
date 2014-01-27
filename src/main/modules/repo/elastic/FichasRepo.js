@@ -92,11 +92,38 @@ define(['elasticsearch', 'Q', 'repo/domain/Ficha'], function (elasticsearch, Q, 
       });
     }
 
+    function withNumero(numero) {
+      return client
+          .search({
+            index: 'clavicon',
+            type: 'ficha',
+            body: {
+              query: {
+                filtered: {
+                  query: {match_all: {}},
+                  filter: {
+                    term: {numero: numero}
+                  }
+                }
+              },
+              size: 1
+            }
+          })
+          .then(function (result) {
+            if (result.hits.hits.length === 0)
+              return null;
+            var ficha = result.hits.hits[0]._source;
+            ficha.id = result.hits.hits[0]._id;
+            return ficha;
+          });
+    }
+
     return {
       all: all,
       create: create,
       persist: persist,
       remove: remove,
+      withNumero: withNumero,
       sequences: sequences
     };
   };

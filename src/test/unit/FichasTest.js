@@ -6,7 +6,6 @@ define(['app/AppFactory', 'repo/repoFactory'], function (AppFactory, repoFactory
       return {
         bootstrap: function (appApi) {
           appApi.setWebApi(webApi());
-
         }
       };
     }
@@ -36,18 +35,18 @@ define(['app/AppFactory', 'repo/repoFactory'], function (AppFactory, repoFactory
   }
 
   describe("El módulo de Fichas", function () {
-    var app, web, ficha = {nombre: 'Cocotero'};
-
-    beforeEach(function () {
-      web = TestWeb();
-      app = AppFactory(repoFactory.inMemory([]), web.factory);
-      app.bootstrap();
-      setTimeout(web.reset, 0);
-    });
+    var app, web;
 
     describe("Permite crear fichas nuevas", function () {
-      iit("Transiciona a la vista de listado tras crear una ficha y la lista contiene la lista creada", function () {
+      var ficha = {nombre: 'Cocotero'};
+      beforeEach(function () {
+        web = TestWeb();
+        app = AppFactory(repoFactory.inMemory([]), web.factory);
+      });
+
+      it("Transiciona a la vista de listado tras crear una ficha y la lista contiene la lista creada", function () {
         runs(function () {
+          app.bootstrap();
           app.api.execute(app.api.useCases.fichas.crear, ficha);
         });
         waitsFor(function () {
@@ -61,6 +60,7 @@ define(['app/AppFactory', 'repo/repoFactory'], function (AppFactory, repoFactory
       });
       it("Asigna un número consecutivo a cada ficha creada para identificarla", function () {
         runs(function () {
+          app.bootstrap();
           app.api.execute(app.api.useCases.fichas.crear, ficha);
         });
         waitsFor(function () {
@@ -69,7 +69,30 @@ define(['app/AppFactory', 'repo/repoFactory'], function (AppFactory, repoFactory
         runs(function () {
           expect(web.status().data[0].numero).toBe(1);
         });
-      })
+      });
+    });
+
+    describe("Permite cambiar una ficha existente", function () {
+      var ficha = {numero: 42, nombre: 'Cocotero'};
+
+      beforeEach(function () {
+        web = TestWeb();
+        app = AppFactory(repoFactory.inMemory([ficha]), web.factory);
+      });
+
+      it("carga la ficha a cambiar con todos sus datos", function () {
+        runs(function () {
+          app.bootstrap();
+          app.api.execute(app.api.useCases.fichas.irAEditar, ficha.numero);
+        });
+        waitsFor(function () {
+          return web.status().view;
+        });
+        runs(function () {
+          expect(web.status().view).toBe('/fichas/42');
+          expect(web.status().data).toBe(ficha);
+        });
+      });
     });
   });
 });

@@ -46,11 +46,19 @@ define(['repo/domain/Ficha'], function (Ficha) {
       return all();
     }
 
+    function withNumero(numero) {
+      var candidatas = fichas.filter(function (ficha) {
+        return ficha.numero == numero;
+      });
+      return candidatas[0];
+    }
+
     return {
       all: all,
       create: create,
       persist: persist,
       remove: remove,
+      withNumero: withNumero,
       sequences: sequences
     };
   };

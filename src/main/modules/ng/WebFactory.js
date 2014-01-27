@@ -7,7 +7,6 @@ define(['angular', 'ng/WebApi', 'ng/navBar/NavBarModule', 'ng/fichas/fichasModul
     var webApp = angular.module(appName, [NavBar(), Fichas(), Apuntes()]),
         api;
 
-
     function bootstrap(appApi, element) {
       webApp
           .constant('appApi', appApi)
