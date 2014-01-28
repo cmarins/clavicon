@@ -38,7 +38,7 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
   }
 
   describe("El módulo de Fichas", function () {
-    var app, web;
+    var app, web, repo;
 
     describe("Permite ver las fichas existentes", function () {
       var fichasPorPagina = 10, fichas;
@@ -87,7 +87,8 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
       var ficha = new Ficha({nombre: 'Cocotero'});
       beforeEach(function () {
         web = TestWeb();
-        app = AppFactory(RepoFactory({itemsPerPage: 10}).inMemory([]), web.factory);
+        repo = RepoFactory({itemsPerPage: 10}).inMemory([]);
+        app = AppFactory(repo, web.factory);
       });
 
       it("prepara una ficha vacía y te manda a crearla", function () {
@@ -113,10 +114,10 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
         return web.status().view;
       });
       runs(function () {
+        expect(repo.fichas.all().length).toBe(1);
         expect(web.status().view).toBe("/fichas");
         expect(web.status().data.total).toBe(1);
-        expect(web.status().data.fichas[0].numero).toBe(1);
-        expect(web.status().data.fichas[0].nombre).toBe(ficha.nombre);
+        expect(web.status().data.fichas).toEqual(repo.fichas.all());
       });
     });
 
@@ -173,7 +174,8 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
     beforeEach(function () {
       ficha = new Ficha({numero: 42, nombre: 'Cocotero'});
       web = TestWeb();
-      app = AppFactory(RepoFactory({itemsPerPage: 10}).inMemory([ficha]), web.factory);
+      repo = RepoFactory({itemsPerPage: 10}).inMemory([ficha]);
+      app = AppFactory(repo, web.factory);
     });
 
     it("borra la ficha y te manda al listado y la ficha ya no está", function () {
@@ -185,6 +187,7 @@ define(['app/AppFactory', 'repo/RepoFactory', 'repo/domain/Ficha'], function (Ap
         return web.status().view;
       });
       runs(function () {
+        expect(repo.fichas.all().length).toBe(0);
         expect(web.status().view).toBe('/fichas');
         expect(web.status().data.total).toBe(0);
       });

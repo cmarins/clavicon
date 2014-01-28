@@ -21,7 +21,5 @@ define([], function () {
     this.pais = '';
   };
 
-  Ficha.prototype = Ficha.Null.prototype;
-
   return Ficha;
 });
