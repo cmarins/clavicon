@@ -1,14 +1,13 @@
 <div class="page-header">
   <h1>Listado de fichas</h1>
-
-  <p class="lead">Aquí puedes gestionar las fichas de las empresas y personas de tu contabilidad. Usa el filtro y los
-    enlaces de páginas para encontrar lo que buscas.</p>
 </div>
 
 <div class="row" ng-hide="fichas.length">
   <div class="col-lg-12">
     <div class="input-group">
-      <button type="button" class="btn btn-primary" ng-click="irACrear()"><span class="glyphicon glyphicon-plus"></span> Crear la primera ficha</button>
+      <button type="button" class="btn btn-primary" ng-click="irACrear()"><span class="glyphicon glyphicon-plus"></span>
+        Crear la primera ficha
+      </button>
     </div>
   </div>
 </div>
@@ -17,7 +16,9 @@
   <div class="col-lg-12">
     <div class="input-group">
       <span class="input-group-btn">
-        <button type="button" class="btn btn-primary" ng-click="irACrear()"><span class="glyphicon glyphicon-plus"></span> Crear</button>
+        <button type="button" class="btn btn-primary" ng-click="irACrear()"><span
+            class="glyphicon glyphicon-plus"></span> Crear
+        </button>
       </span>
       <span class="input-group-addon "><span class="glyphicon glyphicon-filter"></span> Filtrar</span>
       <input ng-model="filtro" type="text" class="form-control" placeholder="Pon algo para filtrar resultados">
@@ -33,21 +34,24 @@
         <tr>
           <th>Núm.</th>
           <th>Nombre</th>
-          <th>NIF</th>
-          <th>Email</th>
-          <th>Teléfono</th>
+          <th>Emails</th>
+          <th>Teléfonos</th>
           <th>Dirección</th>
-          <th>Localidad</th>
-          <th>C.P.</th>
-          <th>Provincia</th>
-          <th>Borrar</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="ficha in fichas | filtroFicha:filtro">
-          <td><button ng-click="irAEditar(ficha)" class="btn btn-default" title="Editar esta ficha"><span class="glyphicon glyphicon-pencil"></span> {{ficha.numero}}</button></td>
-          <td ng-bind="ficha.nombre"></td>
-          <td ng-bind="ficha.nif"></td>
+          <td>
+            <button ng-click="irAEditar(ficha)" class="btn btn-default" title="Editar esta ficha"><span
+                class="glyphicon glyphicon-pencil"></span> {{ficha.numero}}
+            </button>
+          </td>
+          <td>
+            <address>
+              <strong>{{ficha.nombre}}</strong><br/>
+              {{ficha.nif}}
+            </address>
+          </td>
           <td>
             <ul class="emails">
               <li ng-repeat="email in ficha.emails" ng-bind="email"></li>
@@ -58,12 +62,16 @@
               <li ng-repeat="telefono in ficha.telefonos" ng-bind="telefono"></li>
             </ul>
           </td>
-          <td ng-bind="ficha.direccion"></td>
-          <td ng-bind="ficha.localidad"></td>
-          <td ng-bind="ficha.codigo_postal"></td>
-          <td ng-bind-template="{{ficha.provincia}} ({{ficha.pais}})"></td>
           <td>
-            <button class="btn btn-danger" ng-click="borrar(ficha)" title="Borrar esta ficha"><span class="glyphicon glyphicon-remove"></span></button>
+            <address>
+              <strong>{{ficha.direccion}}</strong><br>
+              {{ficha.codigo_postal}} - {{ficha.localidad}}<br>
+              {{ficha.provincia}} ({{ficha.pais}})<br>
+            </address>
+          </td>
+          <td>
+            <button class="btn btn-danger" ng-click="borrar(ficha)" title="Borrar esta ficha"><span
+                class="glyphicon glyphicon-remove"></span></button>
           </td>
         </tr>
         </tbody>

@@ -22,7 +22,7 @@
         apiVersion: '1.0',
         log: 'warning'
       },
-      itemsPerPage: 10
+      itemsPerPage: 6
     };
     var elasticRepo = RepoFactory(config).elastic();
     var webFactory = WebFactory(config);
