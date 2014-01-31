@@ -11,14 +11,11 @@
     }
   });
 
-//	allTestFiles.push("app");
-//	allTestFiles.push("mocks");
-//	allTestFiles.push("angular-route");
-
   require({
     // "/base" is the URL from where karma is serving project files
     baseUrl: '/base/src/main/modules',
     paths: {
+      'TestWebAdapter': '/base/src/test/helpers/TestWebAdapter',
       'Q': '/base/bower_components/q/q',
       'elasticsearch': '/base/non_bower_components/elasticsearch-js/elasticsearch'
     },

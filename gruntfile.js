@@ -133,21 +133,16 @@ module.exports = function (grunt) {
       }
     },
     karma: {
+      options: {
+        configFile: 'karma.conf.js'
+      },
       unit: {
         options: {
-          configFile: 'karma.conf.unit.js',
           background: true
-        }
-      },
-      func: {
-        options: {
-          configFile: 'karma.conf.func.js',
-          singleRun: true
         }
       },
       build: {
         options: {
-          configFile: 'karma.conf.unit.js',
           singleRun: true
         }
       }

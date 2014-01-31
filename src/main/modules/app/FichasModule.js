@@ -33,8 +33,8 @@ define(['Q'], function (Q) {
             ficha.numero = numero;
             return ficha;
           })
-          .then(function (a) {
-            return repo.fichas.persist(a);
+          .then(function (fichaConNumero) {
+            return repo.fichas.persist(fichaConNumero);
           })
           .then(transitionToListado);
     }
