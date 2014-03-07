@@ -1,5 +1,4 @@
 [![Stories in Ready](https://badge.waffle.io/ggalmazor/clavicon.png?label=ready&title=Ready)](https://waffle.io/ggalmazor/clavicon)
-[![Stories in Ready](https://badge.waffle.io/ggalmazor/clavicon.png?label=ready&title=Ready)](https://waffle.io/ggalmazor/clavicon)
 #Clavicon
 
 Este proyecto es un proyecto Grunt. Necesitas una instalación de [nodeJS](http://nodejs.org/), [grunt](http://gruntjs.com/) y
